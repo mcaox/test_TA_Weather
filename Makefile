@@ -53,3 +53,10 @@ pypi_test:
 
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
+
+
+# ----------------------------------
+#      API
+# ----------------------------------
+run_api:
+	test_TA_Weather.api.api:app --reload
