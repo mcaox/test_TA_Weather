@@ -8,7 +8,7 @@ wheel>=0.29
 numpy
 pandas
 scikit-learn
-xgboost
+xgboost==1.5.1
 
 # tests/linter
 black

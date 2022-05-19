@@ -1,3 +1,4 @@
+from datetime import datetime
 from pathlib import Path
 
 import joblib
@@ -11,8 +12,20 @@ from test_TA_Weather.assets.model import ModelGetter
 import uvicorn
 
 
-DATE_URL_FMT = "%Y"
-URL_PREDICT = "?date=2022-05-01&latitude=-73.9996&longitude=40.6501&altitude=40.6501&dd=-73.9496&ff=1&t=30&u=0&pres=0&dd_sin=0&dd_cos=0"
+
+MEAN_LAT = 45.478172
+MEAN_LONG = 3.451461
+MEAN_ALT = 193.196708
+MEAN_DD = 185.492402
+MEAN_FF = 3.41
+MEAN_T = 13.26
+MEAN_U = 71.29
+MEAN_PRES = 0.35
+
+
+URL_PREDICT = f"?date={datetime.now().strftime('%x')}&"\
+f"latitude={MEAN_LAT}&longitude={MEAN_LONG}&altitude={MEAN_ALT}&"\
+f"dd={MEAN_DD}&ff={MEAN_FF}&t={MEAN_T}&u={MEAN_U}&pres={MEAN_PRES}&dd_sin=0&dd_cos=0"
 
 
 app = FastAPI()
@@ -30,7 +43,7 @@ app.add_middleware(
 # define a root `/` endpoint
 @app.get("/")
 def index():
-    return {"Status": "Up and running"}
+    return {"Example": URL_PREDICT}
 
 
 @app.get("/predict")
@@ -64,8 +77,8 @@ dd_cos:float):
         "dd_sin":dd_sin,
         "dd_cos":dd_cos
     }
-    X = pd.DataFrame(dd,index=[0])
-    y_pred = ModelGetter.get().predict(X)
+
+
     if message:
         return {
             "pluvieux": 0,
@@ -73,13 +86,10 @@ dd_cos:float):
             "message":message
         }
     else:
+        X = pd.DataFrame(dd,index=[0])
+        y_pred = ModelGetter.get().predict(X)
         return {
-            "pluvieux": y_pred[0],
+            "pluvieux": int(y_pred[0]),
             "error": 0,
             "message":""
         }
-
-
-
-
-
