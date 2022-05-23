@@ -25,6 +25,11 @@ s3fs
 uvicorn
 fastapi
 
+#app
+streamlit
+folium
+streamlit_folium
+
 # utilities
 six>=1.14
 joblib
