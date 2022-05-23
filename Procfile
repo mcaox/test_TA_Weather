@@ -1,0 +1,1 @@
+web: pip install . -U && streamlit run test_TA_Weather/app/__init__.py   https://testta-ngmc2fyfnq-ey.a.run.app/predict
